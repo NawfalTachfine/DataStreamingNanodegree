@@ -1,0 +1,6 @@
+name: data_streaming
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.7
