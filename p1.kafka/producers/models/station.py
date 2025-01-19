@@ -26,7 +26,7 @@ class Station(Producer):
             .replace("-", "_")
             .replace("'", "")
         )
-        topic_name = f"org.chicago.cta.station.arrivals"
+        topic_name = f"org.chicago.cta.{station_name}.arrivals"
         super().__init__(
             topic_name,
             key_schema=Station.key_schema,

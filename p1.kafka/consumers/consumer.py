@@ -39,6 +39,7 @@ class KafkaConsumer:
         self.broker_properties = {
             'bootstrap.servers': 'PLAINTEXT://localhost:9092,PLAINTEXT://kafklocalhosta1:9093,PLAINTEXT://localhost:9094', # 'PLAINTEXT://kafka0:9092,PLAINTEXT://kafka1:9093,PLAINTEXT://kafka2:9094',
             'group.id': 'default',
+            'auto.offset.reset': 'earliest' if offset_earliest else 'latest'
         }
 
         # TODO: Create the Consumer, using the appropriate type.
@@ -97,6 +98,7 @@ class KafkaConsumer:
             logger.error(f"Error from consumer: {message.error()}")
             return 0
         try:
+            self.message_handler(message)
             logger.info(f"Message received: {message.value()}")
             return 1
         except KeyError as error:

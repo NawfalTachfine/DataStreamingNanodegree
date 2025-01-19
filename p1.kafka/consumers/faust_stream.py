@@ -37,12 +37,12 @@ topic = app.topic("org.chicago.cta.stations", value_type=Station)
 # TODO: Define the output Kafka Topic
 out_topic = app.topic("org.chicago.cta.stations.table.v1", partitions=1)
 # TODO: Define a Faust Table
-# table = app.Table(
-#    # "TODO",
-#    # default=TODO,
-#    partitions=1,
-#    changelog_topic=out_topic,
-# )
+table = app.Table(
+   "stations_table",
+   default=Station,
+   partitions=1,
+   changelog_topic=out_topic,
+)
 
 
 #
@@ -72,6 +72,8 @@ async def process(stream):
             line=color,
         )
         logger.info(f"Faust publishing transformed station: {station.__str__()}")
+        table[station.station_id] = new_record
+        # out_topic.send(value=new_record)
         await out_topic.send(value=new_record)
 
 
